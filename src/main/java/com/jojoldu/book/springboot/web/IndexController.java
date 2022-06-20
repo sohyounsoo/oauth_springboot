@@ -5,11 +5,14 @@ import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.service.posts.PostsService;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @Controller
@@ -18,12 +21,24 @@ public class IndexController {
     private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user) {
-        model.addAttribute("posts", postsService.findAllDesc());
+    public String index(Model model, @LoginUser SessionUser user, @PageableDefault(size = 2) Pageable pageable) {
+        model.addAttribute("posts", postsService.findAll(pageable));
 
         if(user != null) {
-            model.addAttribute("userName", user.getName());
+            model.addAttribute("user", user.getName());
         }
+
+        ArrayList pageIndex = new ArrayList();
+        int total = postsService.findAll(pageable).getTotalPages();
+
+        for(int i=0; i<total; i++){
+            pageIndex.add(i);
+        }
+        model.addAttribute("pageIndex", pageIndex);
+        model.addAttribute("posts", postsService.findAll(pageable));
+        //model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+        //model.addAttribute("next", pageable.next().getPageNumber());
+
         return "index";
     }
 
