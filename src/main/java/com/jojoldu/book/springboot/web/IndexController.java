@@ -6,11 +6,13 @@ import com.jojoldu.book.springboot.service.posts.PostsService;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
@@ -21,23 +23,10 @@ public class IndexController {
     private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user, @PageableDefault(size = 2) Pageable pageable) {
-        model.addAttribute("posts", postsService.findAll(pageable));
-
+    public String index(Model model, @LoginUser SessionUser user) {
         if(user != null) {
             model.addAttribute("user", user.getName());
         }
-
-        ArrayList pageIndex = new ArrayList();
-        int total = postsService.findAll(pageable).getTotalPages();
-
-        for(int i=0; i<total; i++){
-            pageIndex.add(i);
-        }
-        model.addAttribute("pageIndex", pageIndex);
-        model.addAttribute("posts", postsService.findAll(pageable));
-        //model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
-        //model.addAttribute("next", pageable.next().getPageNumber());
 
         return "index";
     }
@@ -53,6 +42,22 @@ public class IndexController {
         model.addAttribute("post", dto);
 
         return "posts-update";
+    }
+
+    @GetMapping(value = "/posts/selectList")
+    public String selectMonitoringListAjax(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 2) Pageable pageable) throws Exception {
+        ArrayList pageIndex = new ArrayList();
+        int total = postsService.findAll(pageable).getTotalPages();
+
+        for(int i=0; i<total; i++){
+            pageIndex.add(i);
+        }
+        model.addAttribute("pageIndex", pageIndex);
+        model.addAttribute("posts", postsService.findAll(pageable));
+        //model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+        //model.addAttribute("next", pageable.next().getPageNumber());
+
+        return "posts-list";
     }
 
 }

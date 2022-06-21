@@ -9,40 +9,17 @@
             {{#user}}
                 Logge in as : <span id="user">{{user}}</span>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+                <a href="/user/update/{{user}}" class="btn btn-info active" role="button">권한부여</a>
             {{/user}}
             {{^user}}
                 <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
                 <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+                <a href="/oauth2/authorization/kakao" class="btn btn-warning active" role="button">카카오 로그인</a>
             {{/user}}
         </div>
     </div>
-    <br>
-
-    <!-- 목록 출력 영역 -->
-    <table class="table table-horizontal table-bordered">
-        <thead class="thead-strong">
-        <tr>
-            <th>게시글번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>최종수정일</th>
-        </tr>
-        </thead>
-        <tbody id="tbody">
-        {{#posts}}
-            <tr>
-                <td>{{id}}</td>
-                <td><a href="/posts/update/{{id}}">{{title}}</a></td>
-                <td>{{author}}</td>
-                <td>{{modifiedDate}}</td>
-            </tr>
-        {{/posts}}
-        </tbody>
-    </table>
-
-    {{#pageIndex}}
-        <li class="page-item"><a class="page-link" href="?page={{.}}">{{.}}</a></li>
-    {{/pageIndex}}
+    <br/>
+    <div id="ajaxPageList"></div>
 
 </div>
 

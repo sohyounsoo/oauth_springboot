@@ -9,10 +9,15 @@ var main = {
             _this.update();
         });
 
-         $('#btn-delete').on('click', function () {
+        $('#btn-delete').on('click', function () {
             _this.delete();
         });
+
+        $('#pageNum').on('click', function () {
+            _this.page();
+        });
     },
+
     save : function () {
         var data = {
             title: $('#title').val(),
@@ -70,7 +75,38 @@ var main = {
             }).fail(function (error) {
                 alert(JSON.stringify(error));
             });
+    },
+
+    select : function () {
+        $.ajax({
+            url: '/posts/selectList',
+            dataType: 'html',
+            type: 'get',
+            data: '',
+            success: function(data) {
+                $('#ajaxPageList').html(data);
+            },
+            error: function(e) {
+                alert('테이블을 가져오는데 실패하였습니다.');
+            }
+        });
+    },
+
+    page : function (num) {
+        $.ajax({
+            url: '/posts/selectList/?page=' + num,
+            dataType: 'html',
+            type: 'get',
+            data: '',
+            success: function(data) {
+                $('#ajaxPageList').html(data);
+            },
+            error: function(e) {
+                alert('테이블을 가져오는데 실패하였습니다.');
+            }
+        });
     }
 };
 
 main.init();
+main.select();

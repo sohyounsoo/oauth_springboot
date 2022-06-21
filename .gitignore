@@ -3,7 +3,7 @@
 .idea
 
 application-real-oauth.properties
-application-ouath.properties
+application-oauth.properties
 
 build
 out
