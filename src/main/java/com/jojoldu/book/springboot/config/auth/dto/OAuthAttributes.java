@@ -38,21 +38,26 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String,Object> response = (Map<String, Object>)attributes.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) response.get("profile");
+        // kakao는 kakao_account에 유저정보가 있다. (email)
+        Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
+        // kakao_account안에 또 profile이라는 JSON객체가 있다. (nickname, profile_image)
+        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
+
+        System.out.println(kakaoAccount);
 
         return OAuthAttributes.builder()
-                .name((String)profile.get("nickname"))
-                .email((String)response.get("email"))
-                .picture((String)profile.get("profile_image_url"))
+                .name((String) kakaoProfile.get("nickname"))
+                .email((String) kakaoAccount.get("email"))
+                .picture((String) kakaoProfile.get("profile_image_url"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
-
     }
 
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        System.out.println(attributes);
 
         return OAuthAttributes.builder()
                 .name((String) response.get("name"))
@@ -64,6 +69,9 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes ofGoole(String userNameAttrobuteName, Map<String, Object> attributes) {
+
+        System.out.println(attributes);
+
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))

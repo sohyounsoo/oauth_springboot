@@ -9,7 +9,7 @@
             {{#loginUserName}}
                 Logge in as : <span id="user">{{loginUserName}}</span>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
-                <a href="/user/update/{{loginUserName}}" class="btn btn-info active" role="button">권한부여</a>
+                <a href="/user/update/{{email}}" class="btn btn-info active" role="button">권한부여</a>
             {{/loginUserName}}
             {{^loginUserName}}
                 <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
