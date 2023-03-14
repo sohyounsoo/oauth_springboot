@@ -3,4 +3,6 @@
 
 java, javascript, mustache, aws, postsql
 
-aws 배포 완료
+AWS
+
+CI/CD 무중단 배포 환경 구축
