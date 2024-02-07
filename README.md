@@ -7,7 +7,6 @@
 - jpa 
 - javascript 
 - mustache
-- aws
 - postsql
 - AWS
 
